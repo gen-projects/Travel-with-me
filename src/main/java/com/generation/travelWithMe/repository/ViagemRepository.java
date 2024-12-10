@@ -14,4 +14,4 @@ public interface ViagemRepository extends JpaRepository<ViagemModel, Long> {
 	public List<ViagemModel> findAllByDestinoContainingIgnoreCase(@Param("destino") String destino);
 
 }
- 
+  
