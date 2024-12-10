@@ -58,7 +58,7 @@ public class ViagemController {
 	public ResponseEntity<ViagemModel> put(@Valid @RequestBody ViagemModel viagemModel){
 		return viagemRepository.findById(viagemModel.getId()) 
 				.map(resposta -> ResponseEntity.status(HttpStatus.OK)
-				.body(pessoaRepository.save(viagemModel)))
+				.body(viagemRepository.save(viagemModel))) /*pessoaRepository -> viagemRepository */
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 			
 	}

@@ -2,10 +2,13 @@ package com.generation.travelWithMe.model;
 
 import java.sql.Time;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -36,13 +39,13 @@ public class ViagemModel {
 	@Size(min = 10, max = 50, message = "Destino deve conter de 10 a 50 caracteres.")
 	private String destino;
 	
-	//@ManyToOne
-	//@JsonIgnoreProperties("viagem")
-	//private Categoria categoria;
+	@ManyToOne
+	@JsonIgnoreProperties("viagem")
+	private CategoriaModel categoria;
 	
-	//@ManyToOne
-	//@JsonIgnoreProperties("viagem")
-	//private Usuario usuario;
+	@ManyToOne
+	@JsonIgnoreProperties("viagem")
+	private UsuarioModel usuario;
 
 	public Long getId() {
 		return id;
