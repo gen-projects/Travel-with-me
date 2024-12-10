@@ -19,7 +19,7 @@ public class ViagemModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotNull(message = "Atributo velocidade é Obrigatorio")
+	@NotNull(message = "Atributo velocidade é Obrigatorio!")
 	private float velocidade;
 	
 	private Time tempoViagem;
@@ -27,12 +27,12 @@ public class ViagemModel {
 	@NotNull
 	private float distancia;
 	
-	@NotBlank(message = "Atributo tipo é Obrigatorio")
+	@NotBlank(message = "Atributo tipo é Obrigatorio!")
 	@Size(min = 5, max = 20, message = "Tipo da viagem deve conter de 5 a 20 caracteres.")
 	private String tipo;
 	
 	
-	@NotBlank(message = "Atributo destino é Obrigatorio")
+	@NotBlank(message = "Atributo destino é Obrigatorio!")
 	@Size(min = 10, max = 50, message = "Destino deve conter de 10 a 50 caracteres.")
 	private String destino;
 	
