@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.travelWithMe.model.ViagemModel;
+import com.generation.travelWithMe.repository.CategoriaRepository;
 import com.generation.travelWithMe.repository.ViagemRepository;
 import com.generation.travelWithMe.service.ViagemService;
 
@@ -31,6 +32,9 @@ public class ViagemController {
 
 	@Autowired
 	private ViagemRepository viagemRepository;
+	
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 
 	@GetMapping
 	public ResponseEntity<List<ViagemModel>> getAll() {
@@ -52,26 +56,31 @@ public class ViagemController {
 	@PostMapping
 	public ResponseEntity<ViagemModel> post(@Valid @RequestBody ViagemModel viagemModel){
 		
-		viagemModel.setTempoViagem(ViagemService.tempoDaViagem
-								  (viagemModel.getVelocidade(), viagemModel.getDistancia()));
-		
-		return ResponseEntity.status(HttpStatus.CREATED)
+		if(categoriaRepository.existsById(viagemModel.getCategoria().getId())) {
+			viagemModel.setTempoViagem(ViagemService.tempoDaViagem
+					  (viagemModel.getVelocidade(), viagemModel.getDistancia()));
+
+			return ResponseEntity.status(HttpStatus.CREATED)
 				.body(viagemRepository.save(viagemModel));
+		}
+		
+		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria não Existe!!", null);
 	}
 	
 	@PutMapping
 	public ResponseEntity<ViagemModel> put(@Valid @RequestBody ViagemModel viagemModel){
-		return viagemRepository.findById(viagemModel.getId()) 
-				.map(resposta ->{
-					
-					resposta.setTempoViagem(ViagemService.tempoDaViagem
-										   (resposta.getVelocidade(), resposta.getDistancia()));
-					
-					return ResponseEntity.status(HttpStatus.OK)
-							.body(viagemRepository.save(viagemModel));
-				}) /*pessoaRepository -> viagemRepository */
-				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-			
+		
+		if(viagemRepository.existsById(viagemModel.getId())) {
+			if(categoriaRepository.existsById(viagemModel.getCategoria().getId())) {
+				viagemModel.setTempoViagem(ViagemService.tempoDaViagem
+						  (viagemModel.getVelocidade(), viagemModel.getDistancia()));
+				
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(viagemRepository.save(viagemModel));
+			}
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria não existente!", null);	
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
