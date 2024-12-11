@@ -1,16 +1,23 @@
 package com.generation.travelWithMe.model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.Email;
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "tb_usuario") //usuario -> tb_usuario
 
 public class UsuarioModel {
 	
@@ -34,6 +41,10 @@ public class UsuarioModel {
 
 	    @Size(max = 5000, message = "A foto deve ter no máximo 5000 caracteres.")
 	    private String foto;
+	    
+	    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
+	    @JsonIgnoreProperties("usuario")
+	    private List<ViagemModel> viagem;
 
 	    // Getters e Setters
 	    public Long getId() {
@@ -75,4 +86,13 @@ public class UsuarioModel {
 	    public void setFoto(String foto) {
 	        this.foto = foto;
 	    }
+
+		public List<ViagemModel> getViagem() {
+			return viagem;
+		}
+
+		public void setViagem(List<ViagemModel> viagem) {
+			this.viagem = viagem;
+		}
+	    
 	}
