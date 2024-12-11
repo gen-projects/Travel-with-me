@@ -1,7 +1,5 @@
 package com.generation.travelWithMe.model;
 
-import java.sql.Time;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
@@ -25,7 +23,7 @@ public class ViagemModel {
 	@NotNull(message = "Atributo velocidade é Obrigatorio!")
 	private float velocidade;
 	
-	private Time tempoViagem;
+	private Long tempoViagem;
 	
 	@NotNull
 	private float distancia;
@@ -67,12 +65,12 @@ public class ViagemModel {
 	}
 
 
-	public Time getTempoViagem() {
+	public Long getTempoViagem() {
 		return tempoViagem;
 	}
 
 
-	public void setTempoViagem(Time tempoViagem) {
+	public void setTempoViagem(Long tempoViagem) {
 		this.tempoViagem = tempoViagem;
 	}
 
@@ -105,5 +103,27 @@ public class ViagemModel {
 	public void setDestino(String destino) {
 		this.destino = destino;
 	}
-		
+
+
+	public CategoriaModel getCategoria() {
+		return categoria;
+	}
+
+
+	public void setCategoria(CategoriaModel categoria) {
+		this.categoria = categoria;
+	}
+
+
+	public UsuarioModel getUsuario() {
+		return usuario;
+	}
+
+
+	public void setUsuario(UsuarioModel usuario) {
+		this.usuario = usuario;
+	}
+	
+	
+	
 }
