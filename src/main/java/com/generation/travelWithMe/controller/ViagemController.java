@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.travelWithMe.model.ViagemModel;
 import com.generation.travelWithMe.repository.ViagemRepository;
+import com.generation.travelWithMe.service.ViagemService;
 
 import jakarta.validation.Valid;
 
@@ -50,6 +51,10 @@ public class ViagemController {
 	
 	@PostMapping
 	public ResponseEntity<ViagemModel> post(@Valid @RequestBody ViagemModel viagemModel){
+		
+		viagemModel.setTempoViagem(ViagemService.tempoDaViagem
+								  (viagemModel.getVelocidade(), viagemModel.getDistancia()));
+		
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(viagemRepository.save(viagemModel));
 	}
@@ -57,8 +62,14 @@ public class ViagemController {
 	@PutMapping
 	public ResponseEntity<ViagemModel> put(@Valid @RequestBody ViagemModel viagemModel){
 		return viagemRepository.findById(viagemModel.getId()) 
-				.map(resposta -> ResponseEntity.status(HttpStatus.OK)
-				.body(viagemRepository.save(viagemModel))) /*pessoaRepository -> viagemRepository */
+				.map(resposta ->{
+					
+					resposta.setTempoViagem(ViagemService.tempoDaViagem
+										   (resposta.getVelocidade(), resposta.getDistancia()));
+					
+					return ResponseEntity.status(HttpStatus.OK)
+							.body(viagemRepository.save(viagemModel));
+				}) /*pessoaRepository -> viagemRepository */
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 			
 	}
